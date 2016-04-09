@@ -26,6 +26,7 @@
 
 #include "Vex_Competition_Includes.c"
 #include "definitions.h"
+#include "tbhFunctions.h"
 #include "pidFunctions.h"
 #include "shooterFunctions.h"
 #include "driveFunctions.h"
@@ -80,12 +81,12 @@ task autonomous()
 task usercontrol()
 {
 	// User control code here, inside the loop
-	startTask(updateFlywheel);
+	startTask(flywheelTBHControl);
 
 	while (true)
 	{
 		driveRC(lDriveControl, rDriveControl);
 		intakeRC(inRollerButton, outRollerButton, upIntakeButton, downIntakeButton);
-		flywheelRC();
+		flywheelRC(&flywheel);
 	}
 }

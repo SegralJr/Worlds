@@ -1,10 +1,9 @@
 //Shooter Variables
-int encoderValues[10];
-float currentRPM;
-int flywheelPower;
-int currentError;
-int targetRPM = 0;
-
+int RPM_debug;
+int power_debug;
+int error_debug;
+int target_debug;
+int select_debug;
 
 //Shooter Constants
 int stopRPM = 0;
@@ -12,10 +11,9 @@ int closeRPM = 800;
 int midRPM = 1800;
 int farRPM = 2200;
 
-float flyP = 0.01;
-float	flyI = 0;
-float flyD = 0;
-int flyMaxPower = 40;
+float kFly = 0.01;
+int flyMaxPower = 127;
+int flyLoopTime = 10;
 
 //Sensor Redefinitions
 #define flywheelEncoder 		(-SensorValue[flyEncoder])

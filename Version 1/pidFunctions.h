@@ -71,6 +71,8 @@ int pidCalculate (pidController *controller)
 	//Refine raw motor power (127 to -127)
 	if (abs(controller->rawPower) > controller->maxPower)
 		controller->motorPower = (controller->rawPower / abs(controller-> rawPower)) * controller->maxPower;
+	else
+		controller->motorPower = controller->rawPower;
 
 	//Return refined motor power
 	return(controller->motorPower);

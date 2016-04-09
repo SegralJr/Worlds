@@ -6,45 +6,44 @@ void runFlywheel (int power)
 	motor[flywheel4] = power;
 }
 
-task updateFlywheel
+task flywheelTBHControl
 {
-	int difference;
-	int lastValue;
+	tbhController *controller = &flywheel;
+
 	while (true)
 	{
-		difference = flywheelEncoder - lastValue;
-		lastValue = flywheelEncoder;
-		wait1Msec(5);
-		currentRPM = ((difference*100)/3);
+		tbhUpdate(controller, flywheelEncoder);
+
+		tbhCalculate(controller);
+
+		controller->motorPower = (controller->drive * flyMaxPower) + 0.5;
+
+		runFlywheel(controller->motorPower);
+
+		RPM_debug = controller->currentVelocity;
+		power_debug = controller->motorPower;
+		error_debug = controller->error;
+		target_debug = controller->targetVelocity;
+
+		wait1Msec(flyLoopTime);
 	}
 }
 
-void setFlywheelRPM (int closeToggle, int midToggle, int farToggle, int stopToggle)
+void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, int farToggle, int stopToggle)
 {
 	if (stopToggle == 1)
-		targetRPM = stopRPM;
+		tbhInit (controller, stopRPM, 0);
 	else if (closeToggle == 1)
-		targetRPM = closeRPM;
+		tbhInit (controller, closeRPM, 0.2);
 	else if (midToggle == 1)
-		targetRPM = midRPM;
+		tbhInit (controller, midRPM, 0.4);
 	else if (farToggle == 1)
-		targetRPM = farRPM;
+		tbhInit (controller, farRPM, 0.6);
+
+	select_debug = controller->targetVelocity;
 }
 
-void runFlywheelRPM (int goalRPM)
+void flywheelRC (tbhController *controller)
 {
-	pidController flywheel;
-	pidInit(&flywheel, flyP, flyI, flyD, flyMaxPower, targetRPM);
-	flywheel.currentVal = currentRPM;
-
-	flywheelPower = pidCalculate(&flywheel);
-	currentError = flywheel.error;
-
-	runFlywheel(flywheelPower);
-}
-
-void flywheelRC ()
-{
-	setFlywheelRPM(closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
-	runFlywheelRPM(targetRPM);
+	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
 }
