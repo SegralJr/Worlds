@@ -7,16 +7,16 @@ int select_debug;
 
 //Shooter Constants
 int stopRPM = 0;
-int closeRPM = 800;
-int midRPM = 1800;
-int farRPM = 2200;
+int closeRPM = 1000;
+int midRPM = 2000;
+int farRPM = 3000;
 
-float kFly = 0.01;
-int flyMaxPower = 127;
+float kFly = 0.0003;
+int flyMaxPower = 100;
 int flyLoopTime = 10;
 
 //Sensor Redefinitions
-#define flywheelEncoder 		(-SensorValue[flyEncoder])
+#define flywheelEncoder 		SensorValue[flyEncoder]
 #define lDriveEncoder 			SensorValue[leftDriveEncoder]
 #define rDriveEncoder				SensorValue[rightDriveEncoder]
 #define accelerometerValue 	SensorValue[accelerometer]
