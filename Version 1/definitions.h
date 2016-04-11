@@ -11,7 +11,9 @@ int closeRPM = 2000;
 int midRPM = 2500;
 int farRPM = 2800;
 
-float kFly = 0.00003;
+float closeGain = 0.00003;
+float midGain = 0.00006;
+float farGain = 0.00008;
 int flyMaxPower = 100;
 int flyLoopTime = 5;
 #define ticksPerRev 261.333

@@ -20,6 +20,8 @@ task flywheelTBHControl
 
 		runFlywheel(controller->motorPower);
 
+		writeDebugStreamLine("nPgmTime|controller->gain|controller->motorPower|controller->currentVelocity");
+
 		wait1Msec(flyLoopTime);
 	}
 }
@@ -27,13 +29,13 @@ task flywheelTBHControl
 void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, int farToggle, int stopToggle)
 {
 	if (stopToggle == 1)
-		tbhInit (controller, stopRPM, 0);
+		tbhInit (controller, stopRPM, 0, closeGain);
 	else if (closeToggle == 1)
-		tbhInit (controller, closeRPM, 0.4);
+		tbhInit (controller, closeRPM, 0.4, closeGain);
 	else if (midToggle == 1)
-		tbhInit (controller, midRPM, 0.6);
+		tbhInit (controller, midRPM, 0.6, midGain);
 	else if (farToggle == 1)
-		tbhInit (controller, farRPM, 0.8);
+		tbhInit (controller, farRPM, 0.9, farGain);
 }
 
 void flywheelRC (tbhController *controller)

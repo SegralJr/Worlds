@@ -21,11 +21,11 @@ typedef struct
 
 static tbhController flywheel;
 
-void tbhInit (tbhController *controller, int targetRPM, int predictedDrive)
+void tbhInit (tbhController *controller, int targetRPM, int predictedDrive, int gain)
 {
 	controller->targetVelocity = targetRPM;
 	controller->approxDrive = predictedDrive;
-	controller->errorScale = kFly;
+	controller->errorScale = gain;
 
 	controller->error = controller->targetVelocity - controller->currentVelocity;
 
