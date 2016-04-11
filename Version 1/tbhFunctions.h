@@ -1,5 +1,5 @@
-typedef struct {
-
+typedef struct
+{
 	long currentTheta;
 	long lastTheta;
 	long lastTime;

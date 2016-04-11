@@ -6,6 +6,12 @@ void runFlywheel (int power)
 	motor[flywheel4] = power;
 }
 
+void runPuncher (int power)
+{
+	motor[puncher1] = power;
+	motor[puncher2] = power;
+}
+
 task flywheelTBHControl
 {
 	tbhController *controller = &flywheel;
@@ -20,11 +26,6 @@ task flywheelTBHControl
 
 		runFlywheel(controller->motorPower);
 
-		RPM_debug = controller->currentVelocity;
-		power_debug = controller->motorPower;
-		error_debug = controller->error;
-		target_debug = controller->targetVelocity;
-
 		wait1Msec(flyLoopTime);
 	}
 }
@@ -34,16 +35,19 @@ void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, 
 	if (stopToggle == 1)
 		tbhInit (controller, stopRPM, 0);
 	else if (closeToggle == 1)
-		tbhInit (controller, closeRPM, 0.2);
+		tbhInit (controller, closeRPM, 0.4);
 	else if (midToggle == 1)
-		tbhInit (controller, midRPM, 0.4);
+		tbhInit (controller, midRPM, 0.6);
 	else if (farToggle == 1)
-		tbhInit (controller, farRPM, 0.6);
-
-	select_debug = controller->targetVelocity;
+		tbhInit (controller, farRPM, 0.8);
 }
 
 void flywheelRC (tbhController *controller)
 {
 	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
+}
+
+void puncherRC (int control)
+{
+	runPuncher(control * 127);
 }

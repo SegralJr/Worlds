@@ -7,11 +7,11 @@ int select_debug;
 
 //Shooter Constants
 int stopRPM = 0;
-int closeRPM = 1000;
-int midRPM = 2000;
+int closeRPM = 2000;
+int midRPM = 2500;
 int farRPM = 3000;
 
-float kFly = 0.0003;
+float kFly = 0.00005;
 int flyMaxPower = 100;
 int flyLoopTime = 10;
 
@@ -29,7 +29,7 @@ int flyLoopTime = 10;
 #define outRollerButton			vexRT[Btn5D]
 #define upIntakeButton 			vexRT[Btn6U]
 #define downIntakeButton	 	vexRT[Btn6D]
-#define toggleShooterButton vexRT[Btn8D]
+#define puncherButton 			vexRT[Btn8D]
 #define stopShooterButton		vexRT[Btn7D]
 #define closeShooterButton 	vexRT[Btn7L]
 #define midShooterButton 		vexRT[Btn7U]
