@@ -37,18 +37,21 @@ void tbhInit (tbhController *controller, int targetRPM, int predictedDrive)
 void tbhUpdate (tbhController *controller, int encoderValue)
 {
 	int deltaTime;
-	int deltaTheta;
+	float deltaTheta;
 	controller->currentTheta = encoderValue;
+	deltaTheta = controller->currentTheta - controller->lastTheta;
 	deltaTime = nSysTime - controller->lastTime;
 	controller->lastTime = nSysTime;
 
-	deltaTheta = controller->currentTheta - controller->lastTheta;
 	controller->lastTheta = controller->currentTheta;
 
-	if (deltaTime == 0)
+	if (deltaTime < 1)
 		controller->currentVelocity = 0;
 	else
 		controller->currentVelocity = ((deltaTheta * 500) / (deltaTime * 3));
+
+	time_debug = deltaTime;
+	theta_debug = deltaTheta;
 }
 
 void tbhCalculate (tbhController *controller)

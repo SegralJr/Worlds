@@ -1,6 +1,6 @@
 //Shooter Variables
-int RPM_debug;
-int power_debug;
+int theta_debug;
+int time_debug;
 int error_debug;
 int target_debug;
 int select_debug;
@@ -9,14 +9,15 @@ int select_debug;
 int stopRPM = 0;
 int closeRPM = 2000;
 int midRPM = 2500;
-int farRPM = 3000;
+int farRPM = 2800;
 
-float kFly = 0.00005;
+float kFly = 0.00003;
 int flyMaxPower = 100;
-int flyLoopTime = 10;
+int flyLoopTime = 5;
+#define ticksPerRev 261.333
 
 //Sensor Redefinitions
-#define flywheelEncoder 		SensorValue[flyEncoder]
+#define flywheelEncoder 		(-SensorValue[flyEncoder])
 #define lDriveEncoder 			SensorValue[leftDriveEncoder]
 #define rDriveEncoder				SensorValue[rightDriveEncoder]
 #define accelerometerValue 	SensorValue[accelerometer]

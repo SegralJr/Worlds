@@ -6,12 +6,6 @@ void runFlywheel (int power)
 	motor[flywheel4] = power;
 }
 
-void runPuncher (int power)
-{
-	motor[puncher1] = power;
-	motor[puncher2] = power;
-}
-
 task flywheelTBHControl
 {
 	tbhController *controller = &flywheel;
@@ -45,9 +39,4 @@ void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, 
 void flywheelRC (tbhController *controller)
 {
 	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
-}
-
-void puncherRC (int control)
-{
-	runPuncher(control * 127);
 }
