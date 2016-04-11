@@ -1,30 +1,9 @@
-void initPositionRedInner ()
+typedef struct
 {
-	xPosition = xRedInnerInit;
-	yPosition = yRedInnerInit;
-	angle = angleRedInnerInit;
-}
-
-void initPositionRedOuter ()
-{
-	xPosition = xRedOuterInit;
-	yPosition = yRedOuterInit;
-	angle = angleRedOuterInit;
-}
-
-void initPositionBlueInner ()
-{
-	xPosition = xBlueInnerInit;
-	yPosition = yBlueInnerInit;
-	angle = angleBlueInnerInit;
-}
-
-void initPositionBlueOuter ()
-{
-	xPosition = xBlueOuterInit;
-	yPosition = yBlueOuterInit;
-	angle = angleBlueOuterInit;
-}
+	float accelX;
+	float accelY;
+	int currentAngle;
+} positionTracking;
 
 void translateAccel (int accelSensor, int currentAccel)
 {
