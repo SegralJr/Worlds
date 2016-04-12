@@ -2,9 +2,9 @@
 #define flywheelEncoder 		(-SensorValue[flyEncoder])
 #define lDriveEncoder 			SensorValue[leftDriveEncoder]
 #define rDriveEncoder				SensorValue[rightDriveEncoder]
-#define accelX 	SensorValue[accelerometerX]
-#define accelY 	SensorValue[accelerometerY]
-#define gyroscopeValue 			SensorValue[gyroscope]
+#define accelX 							SensorValue[accelerometerX]
+#define accelY 							SensorValue[accelerometerY]
+#define gyroscopeValue 			(-SensorValue[gyroscope])
 
 //Controller Redefinitions
 #define lDriveControl				vexRT[Ch3]
