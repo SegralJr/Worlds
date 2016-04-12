@@ -1,28 +1,9 @@
-//Shooter Variables
-int theta_debug;
-int time_debug;
-int error_debug;
-int target_debug;
-int select_debug;
-
-//Shooter Constants
-int stopRPM = 0;
-int closeRPM = 2000;
-int midRPM = 2500;
-int farRPM = 2800;
-
-float closeGain = 0.00003;
-float midGain = 0.00006;
-float farGain = 0.00008;
-int flyMaxPower = 100;
-int flyLoopTime = 5;
-#define ticksPerRev 261.333
-
 //Sensor Redefinitions
 #define flywheelEncoder 		(-SensorValue[flyEncoder])
 #define lDriveEncoder 			SensorValue[leftDriveEncoder]
 #define rDriveEncoder				SensorValue[rightDriveEncoder]
-#define accelerometerValue 	SensorValue[accelerometer]
+#define accelX 	SensorValue[accelerometerX]
+#define accelY 	SensorValue[accelerometerY]
 #define gyroscopeValue 			SensorValue[gyroscope]
 
 //Controller Redefinitions
@@ -37,3 +18,17 @@ int flyLoopTime = 5;
 #define closeShooterButton 	vexRT[Btn7L]
 #define midShooterButton 		vexRT[Btn7U]
 #define farShooterButton		vexRT[Btn7R]
+
+//Shooter Constants
+int stopRPM = 0;
+int closeRPM = 2000;
+int midRPM = 2500;
+int farRPM = 3000;
+int skillsRPM = 2900;
+float closeGain = 0.00003;
+float midGain = 0.00006;
+float farGain = 0.00008;
+int flyMaxPower = 100;
+int flyLoopTime = 5;
+
+//

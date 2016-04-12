@@ -49,9 +49,6 @@ void tbhUpdate (tbhController *controller, int encoderValue)
 		controller->currentVelocity = 0;
 	else
 		controller->currentVelocity = ((deltaTheta * 500) / (deltaTime * 3));
-
-	time_debug = deltaTime;
-	theta_debug = deltaTheta;
 }
 
 void tbhCalculate (tbhController *controller)

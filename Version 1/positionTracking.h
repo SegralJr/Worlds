@@ -1,22 +1,27 @@
 typedef struct
 {
-	float accelX;
-	float accelY;
-	int currentAngle;
+	float xSensor;
+	float ySensor;
+	float angle;
+
+	float xVelocity;
+	float yVelocity;
+
+	float xDisplacement;
+	float yDisplacement;
+
+	float xPosition;
+	float yPosition;
 } positionTracking;
 
-void translateAccel (int accelSensor, int currentAccel)
+void updateSensors (positionTracking *pos, int xAccelSensor, int yAccelSensor, int angleSensor)
 {
-	currentAngle = (angleSensor/10); //Translate to degrees
-	currentAccel = accelSensor*gravity; //Translate to m/Ms
+	pos->xAccel = (xAccelSensor * gravity); //Translate to m/Ms
+	pos->yAccel = (yAccelSensor * gravity); //Transalte to m/Ms
+	pos->angle = (angleSensor / 10); //Translate to degrees
 }
 
-void translateGyro (int angleSensor, int currentAngle)
-{
-	currentAngle = (angleSensor/10)
-}
-
-void calcAverage (int xAccelSensor, int yAccelSensor, int angleSensor, int outputAccel, int outputAngle)
+void calcAverage (positionTracking *pos)
 {
 	int currentXAccel;
 	int currentYAccel;

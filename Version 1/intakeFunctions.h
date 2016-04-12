@@ -8,6 +8,12 @@ void runConveyorIntake (int power)
 	motor[conveyor] = power;
 }
 
+void runIntake (int rollerPower, int conveyorPower)
+{
+	runRollerIntake(rollerPower);
+	runConveyorIntake(conveyorPower);
+}
+
 void intakeRC (int rollerControl1, int rollerControl2,
 							 int intakeControl1, int intakeControl2)
 {
@@ -19,6 +25,5 @@ void intakeRC (int rollerControl1, int rollerControl2,
 	rollerPower = (rollerControl + intakeControl) * 127;
 	conveyorPower = intakeControl * 127;
 
-	runRollerIntake(rollerPower);
-	runConveyorIntake(conveyorPower);
+	runIntake(rollerPower, conveyorPower);
 }
