@@ -42,3 +42,9 @@ void flywheelRC (tbhController *controller)
 {
 	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
 }
+
+void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int gain, int balls)
+{
+	tbhInit (controller, goalRPM, predictedDrive, gain);
+
+}

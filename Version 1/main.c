@@ -36,56 +36,25 @@
 #include "intakeFunctions.h"
 #include "autonomous.h"
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                          Pre-Autonomous Functions
-//
-// You may want to perform some actions before the competition starts. Do them in the
-// following function.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
+//Pre-Autonomous
 
 void pre_auton()
 {
-	// Set bStopTasksBetweenModes to false if you want to keep user created tasks running between
-	// Autonomous and Tele-Op modes. You will need to manage all user created tasks if set to false.
-	bStopTasksBetweenModes = true;
-
-	// All activities that occur before the competition starts
-	// Example: clearing encoders, setting servo positions, ...
+	bStopTasksBetweenModes = false;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 Autonomous Task
-//
-// This task is used to control your robot during the autonomous phase of a VEX Competition.
-// You must modify the code to add your own robot specific commands here.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
+//Autonomous
 
 task autonomous()
 {
-	// .....................................................................................
-	// Insert user code here.
-	// .....................................................................................
-
-	AutonomousCodePlaceholderForTesting();  // Remove this function call once you have "real" code.
+	startTask (flywheelTBHControl, 10);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 User Control Task
-//
-// This task is used to control your robot during the user control phase of a VEX Competition.
-// You must modify the code to add your own robot specific commands here.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
+//Driver Control
 
 task usercontrol()
 {
-	// User control code here, inside the loop
-	startTask(flywheelTBHControl);
+	startTask(flywheelTBHControl, 10);
 
 	while (true)
 	{

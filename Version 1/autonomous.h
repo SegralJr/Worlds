@@ -8,7 +8,8 @@ typedef struct
 
 static auton auto;
 
-void selectColor (auton *controller, char* color)
+void autonInit (auton *controller, char* color, char* tile)
 {
-	auto.color = color;
+	controller->color = color;
+	controller->tile = tile;
 }

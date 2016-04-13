@@ -5,6 +5,7 @@
 #define accelX 							SensorValue[accelerometerX]
 #define accelY 							SensorValue[accelerometerY]
 #define gyroscopeValue 			(-SensorValue[gyroscope])
+#define ballLoaded					SensorValue[loadSwitch]
 
 //Controller Redefinitions
 #define lDriveControl				vexRT[Ch3]
@@ -28,6 +29,10 @@ int skillsRPM = 2900;
 float closeGain = 0.00003;
 float midGain = 0.00006;
 float farGain = 0.00008;
+float stopDrive = 0;
+float closeDrive = 0.4;
+float midDrive = 0.6;
+float farDrive = 0.8;
 int flyMaxPower = 100;
 int flyLoopTime = 5;
 
