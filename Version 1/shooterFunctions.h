@@ -58,9 +58,30 @@ void flywheelRC (tbhController *controller)
 	tuneFlywheelRPM(controller, incrementShooterButton, decrementShooterButton);
 }
 
+task trackBallsFired ()
+{
+	int ballWasLoaded;
+	int ballIsLoaded;
+
+	ballIsLoaded = checkBallLoaded();
+
+	if (ballWasLoaded != ballIsLoaded)
+	{
+		ballsFired += 1;
+	}
+
+	ballWasLoaded = ballIsLoaded;
+
+	wait1Msec (50);
+}
+
 void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int gain, int balls)
 {
+	int ballsFiredInitial = ballsFired;
+
 	tbhInit (controller, goalRPM, predictedDrive, gain);
 
+	while (ballsFired < (balls + ballsFiredInitial)) {}
 
+	tbhInit (controller, stopRPM, stopDrive, closeGain);
 }

@@ -1,7 +1,9 @@
+int ballsFired;
+
 //Sensor Redefinitions
 #define flywheelEncoder 		(-SensorValue[flyEncoder])
-#define lDriveEncoder 			SensorValue[leftDriveEncoder]
-#define rDriveEncoder				SensorValue[rightDriveEncoder]
+#define lDriveEncoder 			SensorValue[leftDriveIME]
+#define rDriveEncoder				SensorValue[rightDriveIME]
 #define accelX 							SensorValue[accelerometerX]
 #define accelY 							SensorValue[accelerometerY]
 #define gyroscopeValue 			(-SensorValue[gyroscope])
@@ -41,3 +43,12 @@ float farDrive = 0.8;
 
 int flyMaxPower = 100;
 int flyLoopTime = 5;
+
+//Drive Constants
+float driveKp = 0.8;
+float driveKi = 0;
+float driveKd = 0;
+
+float turnKp = 0.8;
+float turnKi = 0;
+float turnKd = 0;

@@ -5,9 +5,9 @@
 #pragma config(Sensor, in4,    powerExpander,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  loadSwitch,     sensorTouch)
 #pragma config(Sensor, dgtl2,  flyEncoder,     sensorQuadEncoder)
-#pragma config(Sensor, I2C_1,  leftDriveEncoder, sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_2,  rightDriveEncoder, sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_1,  leftDriveIME, sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_2,  rightDriveIME, sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_3,  flyIME,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Motor,  port1,           roller,        tmotorVex393TurboSpeed_HBridge, openLoop, reversed)
 #pragma config(Motor,  port2,           rightDrive1,   tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port3,           rightDrive2,   tmotorVex393HighSpeed_MC29, openLoop, reversed, encoderPort, I2C_1)
@@ -31,9 +31,9 @@
 #include "definitions.h"
 #include "tbhFunctions.h"
 #include "pidFunctions.h"
+#include "intakeFunctions.h"
 #include "shooterFunctions.h"
 #include "driveFunctions.h"
-#include "intakeFunctions.h"
 #include "autonomous.h"
 
 //Pre-Autonomous
@@ -47,6 +47,7 @@ void pre_auton()
 
 task autonomous()
 {
+	startTask (trackBallsFired);
 	startTask (flywheelTBHControl, 10);
 }
 

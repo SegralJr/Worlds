@@ -1,15 +1,5 @@
-typedef struct
+void programmingSkills ()
 {
-	char* color;
-	char* tile;
+	flywheelAuton(&flywheel, skillsRPM, midDrive, midGain, 32);
 
-	int preloads;
-} auton;
-
-static auton auto;
-
-void autonInit (auton *controller, char* color, char* tile)
-{
-	controller->color = color;
-	controller->tile = tile;
 }
