@@ -32,13 +32,18 @@ void clearScreenLCD ()
 	clearLCDLine(1);
 }
 
+void displayScreenLCD (char* topLine, char* botLine)
+{
+	displayLCDCenteredString(0, topLine);
+	displayLCDCenteredString(1, botLine);
+}
+
 void autonOption (char* title, int optionCount)
 {
 	if (count == optionCount)
 	{
 		//Display blue outer autonomous
-		displayLCDCenteredString(0, title);
-		displayLCDCenteredString(1, "<     Enter    >");
+		displayScreenLCD(title, "<     Enter    >");
 		waitPress();
 
 		//Decrement count if left button is pressed
@@ -80,8 +85,7 @@ void selectAuton ()
 	}
 
 	clearScreenLCD();
-	displayLCDCenteredString(0, "7701Z");
-	displayLCDCenteredString(1, "Ready for Match");
+	displayScreenLCDCentered("7701Z", "Ready");
 }
 
 void selectTile ()
@@ -94,8 +98,7 @@ void selectTile ()
 
 		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
 		{
-			displayLCDCenteredString(0, "Left      Right");
-			displayLCDCenteredString(1, "<             >");
+			displayScreenLCD("Left      Right", "<             >");
 
 			if (nLCDButtons == leftButton)
 			{
@@ -110,8 +113,7 @@ void selectTile ()
 			}
 		}
 		clearScreenLCD();
-		displayLCDCenteredString(0, "7701Z");
-		displayLCDCenteredString(1, "Ready for Match");
+		displayScreenLCD("7701Z", "Ready");
 	}
 }
 
@@ -123,16 +125,14 @@ void execAuton ()
 	if (count == 0)
 	{	//No Autonomous
 		//Display autonomous selection
-		displayLCDCenteredString(0, "No Autonomous");
-		displayLCDCenteredString(1, "Is Running");
+		displayScreenLCD("No Autonomous", "Is Running");
 		//Execute no autonomous
 	}	//End case
 
 	else if (count == 1)
 	{	//Match Autonomous
 		//Display autonomous selection
-		displayLCDCenteredString(0, "Running");
-		displayLCDCenteredString(1, "Long Range");
+		displayScreenLCD("Running", "Long Range");
 		//Execute match autonomous routine
 		longRangeAuton();
 	}	//End case
@@ -140,8 +140,7 @@ void execAuton ()
 	else if (count == 2)
 	{	//Match Autonomous
 		//Display autonomous selection
-		displayLCDCenteredString(0, "Running");
-		displayLCDCenteredString(1, "Mid Range");
+		displayScreenLCD("Running", "Mid Range");
 		//Execute match autonomous routine
 		midRangeAuton();
 	}	//End case
@@ -149,8 +148,7 @@ void execAuton ()
 	else if (count == 3)
 	{	//Defense Autonomous
 		//Display autonomous selection
-		displayLCDCenteredString(0, "Running");
-		displayLCDCenteredString(1, "Defense");
+		displayScreenLCD("Running", "Hoard");
 		//Execute programming skills routine
 		DefenseAuton();
 	}	//End case
@@ -158,8 +156,7 @@ void execAuton ()
 	else if (count == 4)
 	{	//Programming Skills
 		//Display autonomous selection
-		displayLCDCenteredString(0, "Running");
-		displayLCDCenteredString(1, "Program Skills");
+		displayScreenLCD("Running", "Prog Skills");
 		//Execute programming skills routine
 		programmingSkills();
 	}	//End case

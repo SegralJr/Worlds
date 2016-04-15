@@ -35,6 +35,7 @@
 #include "shooterFunctions.h"
 #include "driveFunctions.h"
 #include "autonomous.h"
+#include "lcdFunctions.h"
 
 //Pre-Autonomous
 
