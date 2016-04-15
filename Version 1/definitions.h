@@ -27,14 +27,14 @@ int ballsFired;
 int stopRPM = 0;
 int closeRPM = 2000;
 int midRPM = 2500;
-int farRPM = 3000;
+int farRPM = 3300;
 int skillsRPM = 2900;
 int toleranceRPM = 200;
 int scaleRPM = 50;
 
-float closeGain = 0.00003;
+float closeGain = 0.00008;
 float midGain = 0.00006;
-float farGain = 0.00008;
+float farGain = 0.00004;
 
 float stopDrive = 0;
 float closeDrive = 0.4;

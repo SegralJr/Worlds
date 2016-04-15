@@ -21,7 +21,7 @@ typedef struct
 
 static tbhController flywheel;
 
-void tbhInit (tbhController *controller, int targetRPM, int predictedDrive, int gain)
+void tbhInit (tbhController *controller, int targetRPM, int predictedDrive, float gain)
 {
 	controller->targetVelocity = targetRPM;
 	controller->approxDrive = predictedDrive;
@@ -70,7 +70,7 @@ void tbhCalculate (tbhController *controller)
 			controller->firstZero = false;
 		}
 		else
-			controller->drive = 0.5 * (controller->drive + controller->driveAtZero);
+			controller->drive =(0.2 * controller->drive + 0.8 * controller->driveAtZero);
 
 		controller->driveAtZero = controller->drive;
 	}

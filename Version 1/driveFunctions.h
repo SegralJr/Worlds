@@ -11,10 +11,12 @@ void driveRC (int lControl, int rControl)
 	runDrive(lControl, rControl);
 }
 
-void driveAuton (int lGoalTicks, int rGoalTicks = lGoalTicks)
+void driveAuton (int lGoalDistance, int rGoalDistance = lGoalDistance)
 {
 	int lPower;
 	int rPower;
+	int lGoalTicks = ((lGoalDistance * 392) / (4 * PI));
+	int rGoalTicks = ((rGoalDistance * 392) / (4 * PI));
 
 	pidController lDrive;
 	pidInit(&lDrive, driveKp, driveKi, driveKd, lGoalTicks);
@@ -38,4 +40,19 @@ void driveAuton (int lGoalTicks, int rGoalTicks = lGoalTicks)
 	runDrive(0, 0);
 }
 
-void
+void turnAuton (int goalTicks)
+{
+	int power;
+
+	pidController turn;
+	pidInit(&turn, turnKp, turnKi, turnKd, goalTicks);
+	turn.currentVal = gyroscopeValue;
+
+	while (abs(turn.currentVal) < abs(goalTicks))
+	{
+		turn.currentVal = gyroscopeValue;
+		power = pidCalculate(&turn);
+
+		runDrive(power, -power);
+	}
+}

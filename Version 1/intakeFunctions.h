@@ -22,18 +22,15 @@ int checkBallLoaded ()
 		return 1;
 }
 
-void intakeRC (int rollerControl1, int rollerControl2, int intakeControl1, int intakeControl2)
+void intakeRC (int conveyorControl1, int conveyorControl2, int intakeControl1, int intakeControl2)
 {
-	int rollerControl = rollerControl1 - rollerControl2;
+	int conveyorControl = conveyorControl1 - conveyorControl2;
 	int intakeControl = intakeControl1 - intakeControl2;
 	int rollerPower;
 	int conveyorPower;
-	int ballLoaded;
 
-	ballLoaded = checkBallLoaded();
-
-	rollerPower = ((rollerControl + intakeControl) * 127) * ballLoaded;
-	conveyorPower = (intakeControl * 127) * ballLoaded;
+	rollerPower = (intakeControl * 127);
+	conveyorPower = ((conveyorControl + intakeControl) * 127);
 
 	runIntake(rollerPower, conveyorPower);
 }

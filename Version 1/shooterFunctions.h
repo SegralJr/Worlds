@@ -20,7 +20,7 @@ task flywheelTBHControl
 
 		runFlywheel(controller->motorPower);
 
-		writeDebugStreamLine("nPgmTime|controller->gain|controller->motorPower|controller->currentVelocity");
+		writeDebugStreamLine("%d|&d|%d", nPgmTime,controller->errorScale,controller->motorPower,controller->currentVelocity);
 
 		wait1Msec(flyLoopTime);
 	}
@@ -43,12 +43,12 @@ void tuneFlywheelRPM (tbhController *controller, int increment, int decrement)
 	if (increment == 1)
 	{
 		controller->currentVelocity += scaleRPM;
-		while (increment == 1) {wait1Msec(1);}
+		if (increment == 1) {wait1Msec(1);}
 	}
 	else if (decrement == 1)
 	{
 		controller->currentVelocity -= scaleRPM;
-		while (decrement == 1) {wait1Msec(1);}
+		if (decrement == 1) {wait1Msec(1);}
 	}
 }
 
