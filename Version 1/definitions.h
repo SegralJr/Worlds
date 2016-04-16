@@ -30,20 +30,20 @@ int closeRPM = 130;
 int midRPM = 170;
 int farRPM = 210;
 int skillsRPM = 150;
-int toleranceRPM = 10;
+int toleranceRPM = 20;
 int scaleRPM = 5;
 
-float closeGain = 0.0003;
+float closeGain = 0.0004;
 float midGain = 0.00035;
-float farGain = 0.0004;
+float farGain = 0.00045;
 
 float stopDrive = 0;
 float closeDrive = 0.4;
 float midDrive = 0.6;
 float farDrive = 0.8;
 
-int flyMaxPower = 100;
-int flyLoopTime = 5;
+int flyMaxPower = 127;
+int flyLoopTime = 10;
 
 //Drive Constants
 float driveKp = 0.8;
@@ -53,3 +53,9 @@ float driveKd = 0;
 float turnKp = 0.8;
 float turnKi = 0;
 float turnKd = 0;
+
+//Intake Variables
+bool intakeRunning;
+
+//Debug Variables
+float debugText;

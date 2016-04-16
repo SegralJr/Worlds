@@ -20,7 +20,7 @@ task flywheelTBHControl
 
 		runFlywheel(controller->motorPower);
 
-		//writeDebugStreamLine("%d|&d|%d", nPgmTime,controller->errorScale,controller->motorPower,controller->currentVelocity);
+		writeDebugStreamLine("%d|%d|%d|%d", nPgmTime, controller->currentVelocity, controller->driveAtZero, controller->targetVelocity);
 
 		wait1Msec(flyLoopTime);
 	}
@@ -63,16 +63,19 @@ task trackBallsFired ()
 	int ballWasLoaded;
 	int ballIsLoaded;
 
-	ballIsLoaded = checkBallLoaded();
-
-	if (ballWasLoaded != ballIsLoaded)
+	while(true)
 	{
-		ballsFired += 1;
+		ballIsLoaded = checkBallLoaded();
+
+		if (ballWasLoaded != ballIsLoaded)
+		{
+			ballsFired += 1;
+		}
+
+		ballWasLoaded = ballIsLoaded;
+
+		wait1Msec (50);
 	}
-
-	ballWasLoaded = ballIsLoaded;
-
-	wait1Msec (50);
 }
 
 void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int gain, int balls)

@@ -38,6 +38,7 @@ void tbhUpdate (tbhController *controller, int encoderValue)
 {
 	int deltaTime;
 	float deltaTheta;
+
 	controller->currentTheta = encoderValue;
 	deltaTheta = controller->currentTheta - controller->lastTheta;
 	deltaTime = nSysTime - controller->lastTime;
@@ -49,36 +50,39 @@ void tbhUpdate (tbhController *controller, int encoderValue)
 		controller->currentVelocity = 0;
 	else
 		controller->currentVelocity = ((deltaTheta * 500) / (deltaTime * 3));
+
+
 }
 
 void tbhCalculate (tbhController *controller)
 {
-	controller->error = controller->targetVelocity - controller->currentVelocity;
+controller->error = controller->targetVelocity - controller->currentVelocity;
 
-	controller->drive = controller->drive + (controller->error * controller->errorScale);
+controller->drive = controller->drive + (controller->error * controller->errorScale);
 
-	if (controller->drive > 1)
-		controller->drive = 1;
-	if (controller->drive < 0)
-		controller->drive = 0;
+if (controller->drive > 1)
+	controller->drive = 1;
+if (controller->drive < 0)
+	controller->drive = 0;
 
-	if (sgn(controller->error) != sgn(controller->lastError))
+if (sgn(controller->error) != sgn(controller->lastError))
+{
+	if (controller->firstZero)
 	{
-		if (controller->firstZero)
-		{
-			controller->drive = controller->approxDrive;
-			controller->firstZero = false;
-		}
-		else
-			controller->drive = 0.5 * (controller->drive + controller->driveAtZero);
-
-		controller->driveAtZero = controller->drive;
+		controller->drive = controller->approxDrive;
+		controller->firstZero = false;
 	}
+	else
+		controller->drive = (0.7 * controller->drive + 0.3 * controller->driveAtZero);
 
-	if (controller->currentVelocity < (0.8 * controller->targetVelocity) && controller->firstZero == false)
-	{
-		controller->drive = flyMaxPower;
-	}
+	controller->driveAtZero = controller->drive;
+}
+/*
+if (controller->currentVelocity < (0.6 * controller->targetVelocity) && controller->firstZero == false && controller->targetVelocity != 0 && intakeRunning)
+{
+	controller->drive = 2 * controller->driveAtZero;
+}
+*/
 
-	controller->lastError = controller->error;
+controller->lastError = controller->error;
 }

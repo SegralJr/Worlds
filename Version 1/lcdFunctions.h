@@ -135,7 +135,6 @@ void selectStart ()
 		}
 		waitRelease();
 
-
 		clearScreenLCD();
 
 		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
@@ -155,9 +154,10 @@ void selectStart ()
 			}
 		}
 
+		waitRelease();
+
 		initializeLCD(4);
 
-		waitRelease();
 		if (LCD.type != "Hoard")
 		{
 			while (nLCDButtons != centerButton)

@@ -5,14 +5,14 @@
 #pragma config(Sensor, in4,    powerExpander,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  loadSwitch,     sensorTouch)
 #pragma config(Sensor, dgtl2,  flyEncoder,     sensorQuadEncoder)
-#pragma config(Sensor, I2C_1,  leftDriveIME, sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_2,  rightDriveIME, sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_3,  flyIME,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_1,  leftDriveIME,   sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, I2C_2,  rightDriveIME,  sensorQuadEncoderOnI2CPort,    , AutoAssign )
+#pragma config(Sensor, I2C_3,  flyIME,         sensorNone)
 #pragma config(Motor,  port1,           roller,        tmotorVex393TurboSpeed_HBridge, openLoop, reversed)
 #pragma config(Motor,  port2,           rightDrive1,   tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port3,           rightDrive2,   tmotorVex393HighSpeed_MC29, openLoop, reversed, encoderPort, I2C_1)
 #pragma config(Motor,  port4,           flywheel1,     tmotorVex393TurboSpeed_MC29, openLoop)
-#pragma config(Motor,  port5,           flywheel2,     tmotorVex393TurboSpeed_MC29, openLoop, reversed, encoderPort, I2C_3)
+#pragma config(Motor,  port5,           flywheel2,     tmotorVex393TurboSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port6,           flywheel3,     tmotorVex393TurboSpeed_MC29, openLoop)
 #pragma config(Motor,  port7,           flywheel4,     tmotorVex393TurboSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port8,           leftDrive2,    tmotorVex393HighSpeed_MC29, openLoop, encoderPort, I2C_2)
@@ -42,18 +42,18 @@
 void pre_auton()
 {
 	bStopTasksBetweenModes = false;
-
+	/*
 	startTask(updateScreenLCD);
 
 	selectAuton();
 	selectStart();
+	*/
 }
 
 //Autonomous
 
 task autonomous()
 {
-	startTask (trackBallsFired);
 	startTask (flywheelTBHControl, 10);
 	displayAutonomous();
 	execAuton();
@@ -63,11 +63,12 @@ task autonomous()
 
 task usercontrol()
 {
+	startTask (trackBallsFired);
 	startTask(flywheelTBHControl, 10);
 
 	while (true)
 	{
-		driveRC(lDriveControl, rDriveControl);
+		driveRC(lDriveControl * 0.75, rDriveControl);
 		intakeRC(inRollerButton, outRollerButton, upIntakeButton, downIntakeButton);
 		flywheelRC(&flywheel);
 

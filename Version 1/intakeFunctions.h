@@ -12,6 +12,10 @@ void runIntake (int rollerPower, int conveyorPower)
 {
 	runRollerIntake(rollerPower);
 	runConveyorIntake(conveyorPower);
+	if (conveyorPower == 127)
+		intakeRunning = true;
+	else
+		intakeRunning = false;
 }
 
 void stopIntakeMotors ()
