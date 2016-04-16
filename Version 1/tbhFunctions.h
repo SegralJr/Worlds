@@ -70,9 +70,14 @@ void tbhCalculate (tbhController *controller)
 			controller->firstZero = false;
 		}
 		else
-			controller->drive =(0.2 * controller->drive + 0.8 * controller->driveAtZero);
+			controller->drive = 0.5 * (controller->drive + controller->driveAtZero);
 
 		controller->driveAtZero = controller->drive;
+	}
+
+	if (controller->currentVelocity < (0.8 * controller->targetVelocity) && controller->firstZero == false)
+	{
+		controller->drive = flyMaxPower;
 	}
 
 	controller->lastError = controller->error;

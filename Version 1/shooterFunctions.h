@@ -20,7 +20,7 @@ task flywheelTBHControl
 
 		runFlywheel(controller->motorPower);
 
-		writeDebugStreamLine("%d|&d|%d", nPgmTime,controller->errorScale,controller->motorPower,controller->currentVelocity);
+		//writeDebugStreamLine("%d|&d|%d", nPgmTime,controller->errorScale,controller->motorPower,controller->currentVelocity);
 
 		wait1Msec(flyLoopTime);
 	}
@@ -81,7 +81,12 @@ void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, 
 
 	tbhInit (controller, goalRPM, predictedDrive, gain);
 
-	while (ballsFired < (balls + ballsFiredInitial)) {}
+	while (controller->currentVelocity < controller->targetVelocity) {wait1Msec(1);}
+
+	while (ballsFired < (balls + ballsFiredInitial))
+	{
+		runIntake(127, 127);
+	}
 
 	tbhInit (controller, stopRPM, stopDrive, closeGain);
 }

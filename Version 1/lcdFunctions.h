@@ -1,8 +1,21 @@
-/*
-This file is used to contain all functions
-and task related to the LCD display, including
-its use in autonomous selection and battery display
-*/
+#define leftButton					1
+#define centerButton				2
+#define rightButton					4
+
+typedef struct {
+	char* topLine;
+	char* botLIne;
+
+	int count;
+	int maxCount;
+
+	char* color;
+	char* tile;
+
+	int lcdTimeout;
+} lcdScreen;
+
+static lcdScreen LCD;
 
 void waitPress ()
 {	//Wait for button to be pressed
@@ -32,15 +45,15 @@ void clearScreenLCD ()
 	clearLCDLine(1);
 }
 
-void displayScreenLCD (char* topLine, char* botLine)
+void displayScreenLCD (char* topText, char* botText)
 {
-	displayLCDCenteredString(0, topLine);
-	displayLCDCenteredString(1, botLine);
+	LCD.topLine = topText;
+	LCD.botLine = botText;
 }
 
 void autonOption (char* title, int optionCount)
 {
-	if (count == optionCount)
+	if (LCD.count == optionCount)
 	{
 		//Display blue outer autonomous
 		displayScreenLCD(title, "<     Enter    >");
@@ -51,27 +64,28 @@ void autonOption (char* title, int optionCount)
 		{
 			waitRelease();
 			if (optionCount == 0)
-				count = maxCount;
+				LCD.count = LCD.maxCount;
 			else
-				count += -1;
+				LCD.count -= 1;
 		}
 		//Increment count if right button is pressed
 		else if (nLCDButtons == rightButton)
 		{
 			waitRelease();
-			if (optionCount == maxCount)
-				count = 0;
+			if (optionCount == LCD.maxCount)
+				LCD.count = 0;
 			else
-				count += 1;
+				LCD.count += 1;
 		}
 	}
 }
+
 void selectAuton ()
 { //Function to use LCD screen to select autonomous
 	//Initialize LCD Screen
 	initializeLCD();
 
-	while(nLCDButtons != centerButton || lcdTimer < 25)
+	while(nLCDButtons != centerButton)
 	{	//While center button is not pressed
 		autonOption("No Autonomous", 0);
 
@@ -85,36 +99,47 @@ void selectAuton ()
 	}
 
 	clearScreenLCD();
-	displayScreenLCDCentered("7701Z", "Ready");
 }
 
 void selectTile ()
 {
 	waitRelease();
-
-	if (count == 2)
+	while (nLCDButtons != leftButton && nLCDButtons != rightButton)
 	{
-		clearScreenLCD();
+		displayScreenLCD("Blue        Red", "<             >");
 
-		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
+		if (nLCDButtons == leftButton)
 		{
-			displayScreenLCD("Left      Right", "<             >");
-
-			if (nLCDButtons == leftButton)
-			{
-				waitRelease();
-				tileCount = 0;
-			}
-
-			else if (nLCDButtons == rightButton)
-			{
-				waitRelease();
-				tileCount = 1;
-			}
+			waitRelease();
+			LCD.color = "blue";
 		}
-		clearScreenLCD();
-		displayScreenLCD("7701Z", "Ready");
+
+		else if (nLCDButtons == rightButton)
+		{
+			waitRelease();
+			LCD.color = "red";
+		}
 	}
+	clearScreenLCD();
+
+	waitRelease();
+	while (nLCDButtons != leftButton && nLCDButtons != rightButton)
+	{
+		displayScreenLCD("Inner     Outer", "<             >");
+
+		if (nLCDButtons == leftButton)
+		{
+			waitRelease();
+			LCD.tile = "inner";
+		}
+
+		else if (nLCDButtons == rightButton)
+		{
+			waitRelease();
+			LCD.tile = "outer";
+		}
+	}
+	clearScreenLCD();
 }
 
 void execAuton ()
@@ -122,14 +147,14 @@ void execAuton ()
 	//Initialize LCD Screen
 	initializeLCD();
 
-	if (count == 0)
+	if (LCD.count == 0)
 	{	//No Autonomous
 		//Display autonomous selection
 		displayScreenLCD("No Autonomous", "Is Running");
 		//Execute no autonomous
 	}	//End case
 
-	else if (count == 1)
+	else if (LCD.count == 1)
 	{	//Match Autonomous
 		//Display autonomous selection
 		displayScreenLCD("Running", "Long Range");
@@ -137,7 +162,7 @@ void execAuton ()
 		longRangeAuton();
 	}	//End case
 
-	else if (count == 2)
+	else if (LCD.count == 2)
 	{	//Match Autonomous
 		//Display autonomous selection
 		displayScreenLCD("Running", "Mid Range");
@@ -145,7 +170,7 @@ void execAuton ()
 		midRangeAuton();
 	}	//End case
 
-	else if (count == 3)
+	else if (LCD.count == 3)
 	{	//Defense Autonomous
 		//Display autonomous selection
 		displayScreenLCD("Running", "Hoard");
@@ -153,7 +178,7 @@ void execAuton ()
 		DefenseAuton();
 	}	//End case
 
-	else if (count == 4)
+	else if (LCD.count == 4)
 	{	//Programming Skills
 		//Display autonomous selection
 		displayScreenLCD("Running", "Prog Skills");
@@ -162,16 +187,28 @@ void execAuton ()
 	}	//End case
 }
 
+//**
 void displayBattery ()
 {	//Function to display primary and backup battery level
+	float primaryBattery;
+	float secondaryBattery;
 	//Initialize LCD Screen
 	initializeLCD();
 	//Display primary battery level
 	displayLCDString(0, 0, "Primary: ");
 	sprintf(primaryBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0, 'V');
-	displayNextLCDString(primaryBattery);
+	displayScreenLCD("Primary: ", primaryBattery);
 	//Display backup battery level
 	displayLCDString(1, 0, "Fired:  ");
-	sprintf(numberBallsFired, "1.2%f", ballsFired);
-	displayNextLCDString(numberBallsFired);
+	sprintf(secondaryBattery, "%1.2%f%c", powerExpanderVolts, 'V');
+	displayNextLCDString("Secondary: ", secondaryBattery);
+}
+
+task updateScreenLCD ()
+{
+	int deltaTime;
+	while(true)
+	{
+
+	}
 }

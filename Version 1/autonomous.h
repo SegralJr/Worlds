@@ -1,13 +1,3 @@
-typedef struct{
-	char* color;
-	char* tile;
-
-	int preloads;
-
-} auto;
-
-static auto auton;
-
 void programmingSkills ()
 {
 	flywheelAuton(&flywheel, skillsRPM, midDrive, midGain, 32);
@@ -19,4 +9,22 @@ void programmingSkills ()
 	tbhInit(&flywheel, stopRPM, stopDrive, closeGain);
 }
 
-void
+void longRangeAuton ()
+{
+	flywheelAuton(&flywheel, farRPM, farDrive, farGain, 4);
+}
+
+void shortRangeAuton ()
+{
+
+}
+
+void hoardingAuton ()
+{
+
+}
+
+void execAuton ()
+{
+
+}
