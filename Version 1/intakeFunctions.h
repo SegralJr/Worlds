@@ -14,6 +14,11 @@ void runIntake (int rollerPower, int conveyorPower)
 	runConveyorIntake(conveyorPower);
 }
 
+void stopIntakeMotors ()
+{
+	runIntake(0, 0);
+}
+
 int checkBallLoaded ()
 {
 	if (ballLoaded == 1 && flywheel.currentVelocity < (flywheel.targetVelocity - toleranceRPM))
@@ -33,4 +38,11 @@ void intakeRC (int conveyorControl1, int conveyorControl2, int intakeControl1, i
 	conveyorPower = ((conveyorControl + intakeControl) * 127);
 
 	runIntake(rollerPower, conveyorPower);
+}
+
+void intakeAutonTime (int rollerPower, int conveyorPower, int time)
+{
+	runIntake (rollerPower, conveyorPower);
+	wait1Msec(time);
+	stopIntakeMotors();
 }

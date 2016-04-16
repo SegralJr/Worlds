@@ -31,13 +31,14 @@ typedef struct
 	int motorPower;
 } pidController;
 
-void pidInit (pidController *controller, float kP, float kI, float kD, long goalVal)
+void pidInit (pidController *controller, float kP, float kI, float kD, long goalVal, long maxPower)
 {	//Function to initialize PID controller
 	//Set constant variables
 	controller->kP = kP;
 	controller->kI = kI;
 	controller->kD = kD;
 	controller->kILimit = 50;
+	controller->maxPower = maxPower;
 	//Reset working variables
 	controller->error = controller->lastError = 0;
 	controller->integral = controller->derivative = 0;
@@ -69,8 +70,8 @@ int pidCalculate (pidController *controller)
 												 +(controller->derivative * controller->kD));
 
 	//Refine raw motor power (127 to -127)
-	if (abs(controller->rawPower) > 127)
-		controller->motorPower = sgn(controller->rawPower) * 127;
+	if (abs(controller->rawPower) > controller->maxPower)
+		controller->motorPower = sgn(controller->rawPower) * controller->maxPower;
 	else
 		controller->motorPower = controller->rawPower;
 

@@ -4,15 +4,17 @@
 
 typedef struct {
 	char* topLine;
-	char* botLIne;
+	char* botLine;
 
 	int count;
 	int maxCount;
 
+	char* type;
 	char* color;
 	char* tile;
+	int preloads;
 
-	int lcdTimeout;
+	char* startTile;
 } lcdScreen;
 
 static lcdScreen LCD;
@@ -29,20 +31,26 @@ void waitRelease ()
 	wait1Msec(5);
 }
 
-void initializeLCD ()
-{ //Clear LCD display
+void clearScreenLCD ()
+{ //Clear LCD Display
 	clearLCDLine(0);
 	clearLCDLine(1);
+}
+
+void initializeScreenLCD ()
+{ //Clear LCD display
+	clearScreenLCD();
 	//Turn on LCD backlight
 	bLCDBacklight = true;
 	//Clear LCD Timer
 	clearTimer(T2);
 }
 
-void clearScreenLCD ()
-{ //Clear LCD Display
-	clearLCDLine(0);
-	clearLCDLine(1);
+void initializeLCD (int maxCount)
+{
+	clearScreenLCD();
+
+	LCD.maxCount = maxCount;
 }
 
 void displayScreenLCD (char* topText, char* botText)
@@ -51,7 +59,7 @@ void displayScreenLCD (char* topText, char* botText)
 	LCD.botLine = botText;
 }
 
-void autonOption (char* title, int optionCount)
+void selectOption (char* title, int optionCount)
 {
 	if (LCD.count == optionCount)
 	{
@@ -83,132 +91,127 @@ void autonOption (char* title, int optionCount)
 void selectAuton ()
 { //Function to use LCD screen to select autonomous
 	//Initialize LCD Screen
-	initializeLCD();
+	initializeLCD(4);
 
 	while(nLCDButtons != centerButton)
 	{	//While center button is not pressed
-		autonOption("No Autonomous", 0);
+		selectOption("None", 0);
 
-		autonOption("Long Range", 1);
+		selectOption("Tile", 1);
 
-		autonOption("Mid Range", 2);
+		selectOption("Field", 2);
 
-		autonOption("Defense", 3);
+		selectOption("Hoard", 3);
 
-		autonOption("Program Skills", 4);
+		selectOption("Skills", 4);
 	}
+
+	LCD.type = LCD.topLine;
 
 	clearScreenLCD();
 }
 
-void selectTile ()
+void selectStart ()
 {
 	waitRelease();
-	while (nLCDButtons != leftButton && nLCDButtons != rightButton)
-	{
-		displayScreenLCD("Blue        Red", "<             >");
 
-		if (nLCDButtons == leftButton)
-		{
-			waitRelease();
-			LCD.color = "blue";
+	if(LCD.type != "None" || LCD.type != "Program Skills")
+	{
+		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
+		{	//Select alliance color
+			displayScreenLCD("Blue        Red", "<             >");
+
+			if (nLCDButtons == leftButton)
+			{
+				waitRelease();
+				LCD.color = "Blue";
+			}
+
+			else if (nLCDButtons == rightButton)
+			{
+				waitRelease();
+				LCD.color = "Red";
+			}
+		}
+		waitRelease();
+
+
+		clearScreenLCD();
+
+		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
+		{	//Select tile side
+			displayScreenLCD("Inner     Outer", "<             >");
+
+			if (nLCDButtons == leftButton)
+			{
+				waitRelease();
+				LCD.tile = "Inner";
+			}
+
+			else if (nLCDButtons == rightButton)
+			{
+				waitRelease();
+				LCD.tile = "Outer";
+			}
 		}
 
-		else if (nLCDButtons == rightButton)
+		initializeLCD(4);
+
+		waitRelease();
+		if (LCD.type != "Hoard")
 		{
+			while (nLCDButtons != centerButton)
+			{	//Select number of preloads
+				selectOption("0 (zero)", 0);
+				selectOption("1 (one)", 1);
+				selectOption("2 (two)", 2);
+				selectOption("3 (three)", 3);
+				selectOption("4 (four)", 4);
+			}
+
 			waitRelease();
-			LCD.color = "red";
 		}
 	}
-	clearScreenLCD();
-
-	waitRelease();
-	while (nLCDButtons != leftButton && nLCDButtons != rightButton)
-	{
-		displayScreenLCD("Inner     Outer", "<             >");
-
-		if (nLCDButtons == leftButton)
-		{
-			waitRelease();
-			LCD.tile = "inner";
-		}
-
-		else if (nLCDButtons == rightButton)
-		{
-			waitRelease();
-			LCD.tile = "outer";
-		}
-	}
+	sprintf(LCD.startTile, LCD.color , " " , LCD.tile);
 	clearScreenLCD();
 }
 
-void execAuton ()
-{ //Function to run autonomous based upon lcd selection
-	//Initialize LCD Screen
-	initializeLCD();
+void displayAutonomous ()
+{
+	string topText = "";
+	string botText = "";
 
-	if (LCD.count == 0)
-	{	//No Autonomous
-		//Display autonomous selection
-		displayScreenLCD("No Autonomous", "Is Running");
-		//Execute no autonomous
-	}	//End case
-
-	else if (LCD.count == 1)
-	{	//Match Autonomous
-		//Display autonomous selection
-		displayScreenLCD("Running", "Long Range");
-		//Execute match autonomous routine
-		longRangeAuton();
-	}	//End case
-
-	else if (LCD.count == 2)
-	{	//Match Autonomous
-		//Display autonomous selection
-		displayScreenLCD("Running", "Mid Range");
-		//Execute match autonomous routine
-		midRangeAuton();
-	}	//End case
-
-	else if (LCD.count == 3)
-	{	//Defense Autonomous
-		//Display autonomous selection
-		displayScreenLCD("Running", "Hoard");
-		//Execute programming skills routine
-		DefenseAuton();
-	}	//End case
-
-	else if (LCD.count == 4)
-	{	//Programming Skills
-		//Display autonomous selection
-		displayScreenLCD("Running", "Prog Skills");
-		//Execute programming skills routine
-		programmingSkills();
-	}	//End case
+	sprintf(topText, LCD.type);
+	sprintf(botText, LCD.color, " ", LCD.tile);
 }
 
-//**
 void displayBattery ()
 {	//Function to display primary and backup battery level
-	float primaryBattery;
-	float secondaryBattery;
+	string primaryBattery;
+	string secondaryBattery;
+	string topText = "";
+	string botText = "";
+
 	//Initialize LCD Screen
-	initializeLCD();
+	initializeScreenLCD();
 	//Display primary battery level
-	displayLCDString(0, 0, "Primary: ");
+	displayLCDString(0, 0, "Primary:  ");
 	sprintf(primaryBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0, 'V');
-	displayScreenLCD("Primary: ", primaryBattery);
+	strcat(topText, "Primary: ");
+	strcat(topText, primaryBattery);
+	LCD.topLine = topText;
 	//Display backup battery level
-	displayLCDString(1, 0, "Fired:  ");
-	sprintf(secondaryBattery, "%1.2%f%c", powerExpanderVolts, 'V');
-	displayNextLCDString("Secondary: ", secondaryBattery);
+	displayLCDString(1, 0, "Expander: ");
+	sprintf(secondaryBattery, "%1.2f%c", powerExpanderVolts, 'V');
+	sprintf(botText, "Secondary: ", secondaryBattery);
+	LCD.botLine = botText;
 }
 
 task updateScreenLCD ()
 {
-	int deltaTime;
 	while(true)
 	{
-
+		displayLCDCenteredString(0, LCD.topLine);
+		displayLCDCenteredString(1, LCD.botLine);
 	}
 }

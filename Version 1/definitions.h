@@ -8,7 +8,7 @@ int ballsFired;
 #define accelY 							SensorValue[accelerometerY]
 #define gyroscopeValue 			(-SensorValue[gyroscope])
 #define ballLoaded					SensorValue[loadSwitch]
-#define powerExpanderVolts	(SensorValue[powerExpander] / 182.4)
+#define powerExpanderVolts	(SensorValue[powerExpander] / 280)
 
 //Controller Redefinitions
 #define lDriveControl						vexRT[Ch3]
@@ -29,9 +29,9 @@ int stopRPM = 0;
 int closeRPM = 130;
 int midRPM = 170;
 int farRPM = 210;
-int skillsRPM = 2900;
-int toleranceRPM = 200;
-int scaleRPM = 50;
+int skillsRPM = 150;
+int toleranceRPM = 10;
+int scaleRPM = 5;
 
 float closeGain = 0.0003;
 float midGain = 0.00035;

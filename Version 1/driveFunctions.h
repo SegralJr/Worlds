@@ -6,12 +6,17 @@ void runDrive (int lPower, int rPower)
 	motor[rightDrive2] = rPower;
 }
 
+void stopDriveMotors ()
+{
+	runDrive(0, 0);
+}
+
 void driveRC (int lControl, int rControl)
 {
 	runDrive(lControl, rControl);
 }
 
-void driveAuton (int lGoalDistance, int rGoalDistance = lGoalDistance)
+void driveAuton (int lGoalDistance, int rGoalDistance = lGoalDistance, int maxPower = 127)
 {
 	int lPower;
 	int rPower;
@@ -19,11 +24,11 @@ void driveAuton (int lGoalDistance, int rGoalDistance = lGoalDistance)
 	int rGoalTicks = ((rGoalDistance * 392) / (4 * PI));
 
 	pidController lDrive;
-	pidInit(&lDrive, driveKp, driveKi, driveKd, lGoalTicks);
+	pidInit(&lDrive, driveKp, driveKi, driveKd, lGoalTicks, maxPower);
 	lDrive.currentVal = lDriveEncoder;
 
 	pidController rDrive;
-	pidInit(&rDrive, driveKp, driveKi, driveKd, rGoalTicks);
+	pidInit(&rDrive, driveKp, driveKi, driveKd, rGoalTicks, maxPower);
 	rDrive.currentVal = rDriveEncoder;
 
 	while (abs(lDrive.currentVal) < abs(lGoalTicks) && abs(rDrive.currentVal) < abs(lGoalTicks))
@@ -37,15 +42,17 @@ void driveAuton (int lGoalDistance, int rGoalDistance = lGoalDistance)
 		runDrive(lPower, rPower);
 	}
 
-	runDrive(0, 0);
+	stopDriveMotors();
+	lDriveEncoder = 0;
+	rDriveEncoder = 0;
 }
 
-void turnAuton (int goalTicks)
+void turnAuton (int goalTicks, int maxPower = 127)
 {
 	int power;
 
 	pidController turn;
-	pidInit(&turn, turnKp, turnKi, turnKd, goalTicks);
+	pidInit(&turn, turnKp, turnKi, turnKd, goalTicks, maxPower);
 	turn.currentVal = gyroscopeValue;
 
 	while (abs(turn.currentVal) < abs(goalTicks))
@@ -55,4 +62,7 @@ void turnAuton (int goalTicks)
 
 		runDrive(power, -power);
 	}
+
+	stopDriveMotors();
+	SensorValue[gyroscope] = 0;
 }

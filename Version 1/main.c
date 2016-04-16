@@ -34,14 +34,19 @@
 #include "intakeFunctions.h"
 #include "shooterFunctions.h"
 #include "driveFunctions.h"
+#include "lcdFunctions.h"
 #include "autonomous.h"
-//#include "lcdFunctions.h"
 
 //Pre-Autonomous
 
 void pre_auton()
 {
 	bStopTasksBetweenModes = false;
+
+	startTask(updateScreenLCD);
+
+	selectAuton();
+	selectStart();
 }
 
 //Autonomous
@@ -50,6 +55,8 @@ task autonomous()
 {
 	startTask (trackBallsFired);
 	startTask (flywheelTBHControl, 10);
+	displayAutonomous();
+	execAuton();
 }
 
 //Driver Control
@@ -63,5 +70,7 @@ task usercontrol()
 		driveRC(lDriveControl, rDriveControl);
 		intakeRC(inRollerButton, outRollerButton, upIntakeButton, downIntakeButton);
 		flywheelRC(&flywheel);
+
+		displayBattery();
 	}
 }
