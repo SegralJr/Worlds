@@ -1,4 +1,5 @@
 int ballsFired;
+string team = "7701Z";
 
 //Sensor Redefinitions
 #define flywheelEncoder 		(-SensorValue[flyEncoder])
@@ -9,6 +10,7 @@ int ballsFired;
 #define gyroscopeValue 			(-SensorValue[gyroscope])
 #define ballLoaded					SensorValue[loadSwitch]
 #define powerExpanderVolts	(SensorValue[powerExpander] / 280)
+#define lightValue					SensorValue[lightSensor]
 
 //Controller Redefinitions
 #define lDriveControl						vexRT[Ch3]
@@ -56,6 +58,7 @@ float turnKd = 0;
 
 //Intake Variables
 bool intakeRunning;
+int lightTolerance = 150;
 
 //Debug Variables
 float debugText;

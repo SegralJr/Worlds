@@ -3,6 +3,18 @@ void noAuton ()
 
 }
 
+void testAuton()
+{
+	startTask(intake);
+	wait1Msec(100);
+	runIntake(127, 127);
+	driveAuton(3, 3, 30);
+	driveAuton(-6, -6, 30);
+	driveAuton(8);
+	wait1Msec(300);
+	stopTask(intake);
+}
+
 void programmingSkills ()
 {
 	flywheelAuton(&flywheel, skillsRPM, midDrive, midGain, 32);

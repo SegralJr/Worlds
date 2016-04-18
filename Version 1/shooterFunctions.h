@@ -18,6 +18,12 @@ task flywheelTBHControl
 
 		controller->motorPower = (controller->drive * flyMaxPower) + 0.5;
 
+		if (controller->targetVelocity == 0)
+		{
+			while (controller->motorPower > 0)
+				controller->motorPower -= 2;
+		}
+
 		runFlywheel(controller->motorPower);
 
 		writeDebugStreamLine("%d|%d|%d|%d", nPgmTime, controller->currentVelocity, controller->driveAtZero, controller->targetVelocity);
@@ -29,13 +35,25 @@ task flywheelTBHControl
 void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, int farToggle, int stopToggle)
 {
 	if (stopToggle == 1)
+	{
+		prepBalls();
 		tbhInit (controller, stopRPM, stopDrive, closeGain);
+	}
 	else if (closeToggle == 1)
+	{
+		prepBalls();
 		tbhInit (controller, closeRPM, closeDrive, closeGain);
+	}
 	else if (midToggle == 1)
+	{
+		prepBalls();
 		tbhInit (controller, midRPM, midDrive, midGain);
+	}
 	else if (farToggle == 1)
+	{
+		prepBalls();
 		tbhInit (controller, farRPM, farDrive, farGain);
+	}
 }
 
 void tuneFlywheelRPM (tbhController *controller, int increment, int decrement)
@@ -60,27 +78,30 @@ void flywheelRC (tbhController *controller)
 
 task trackBallsFired ()
 {
-	int ballWasLoaded;
-	int ballIsLoaded;
+	int ballWasFired = checkBallFiring();
+	int ballIsFiring;
+	int lastLightValue;
 
 	while(true)
 	{
-		ballIsLoaded = checkBallLoaded();
+		ballIsFiring = checkBallFiring();
 
-		if (ballWasLoaded != ballIsLoaded)
+		if (ballWasFired > ballIsFiring)
 		{
 			ballsFired += 1;
 		}
 
-		ballWasLoaded = ballIsLoaded;
+		ballWasFired = ballIsFiring;
 
-		wait1Msec (50);
+		wait1Msec (15);
 	}
 }
 
 void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int gain, int balls)
 {
 	int ballsFiredInitial = ballsFired;
+
+	prepBalls();
 
 	tbhInit (controller, goalRPM, predictedDrive, gain);
 

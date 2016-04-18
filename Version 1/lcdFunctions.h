@@ -195,13 +195,11 @@ void displayBattery ()
 	//Initialize LCD Screen
 	initializeScreenLCD();
 	//Display primary battery level
-	displayLCDString(0, 0, "Primary:  ");
 	sprintf(primaryBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0, 'V');
-	strcat(topText, "Primary: ");
+	sprintf(topText, "Primary: ", primaryBattery);
 	strcat(topText, primaryBattery);
 	LCD.topLine = topText;
 	//Display backup battery level
-	displayLCDString(1, 0, "Expander: ");
 	sprintf(secondaryBattery, "%1.2f%c", powerExpanderVolts, 'V');
 	sprintf(botText, "Secondary: ", secondaryBattery);
 	LCD.botLine = botText;
