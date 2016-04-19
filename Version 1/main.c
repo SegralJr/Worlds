@@ -8,7 +8,6 @@
 #pragma config(Sensor, dgtl2,  flyEncoder,     sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  leftDriveIME,   sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  rightDriveIME,  sensorQuadEncoderOnI2CPort,    , AutoAssign )
-#pragma config(Sensor, I2C_3,  flyIME,         sensorNone)
 #pragma config(Motor,  port1,           roller,        tmotorVex393TurboSpeed_HBridge, openLoop, reversed)
 #pragma config(Motor,  port2,           leftDrive1,    tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port3,           rightDrive2,   tmotorVex393HighSpeed_MC29, openLoop, reversed, encoderPort, I2C_1)
@@ -44,7 +43,7 @@ void pre_auton()
 {
 	bStopTasksBetweenModes = false;
 	startTask(updateScreenLCD);
-/*
+	/*
 	selectAuton();
 	selectStart();
 	*/
@@ -67,7 +66,7 @@ task autonomous()
 task usercontrol()
 {
 	startTask(trackBallsFired);
-	startTask(flywheelTBHControl, 10);
+	startTask(flywheelTBHControl, 30);
 
 	while (true)
 	{

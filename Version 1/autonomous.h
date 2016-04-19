@@ -17,19 +17,19 @@ void testAuton()
 
 void programmingSkills ()
 {
-	flywheelAuton(&flywheel, skillsRPM, midDrive, midGain, 32);
-	tbhInit(&flywheel, stopRPM, stopDrive, closeGain);
+	flywheelAuton(&flywheel, skillsRPM, midDrive, midKp, midKi, 32);
+	tbhInit(&flywheel, stopRPM, stopDrive, closeKp, closeKi);
 	turnAuton(-900);
 	driveAuton(120);
 	turnAuton(900);
-	flywheelAuton(&flywheel, skillsRPM, midDrive, midGain, 32);
-	tbhInit(&flywheel, stopRPM, stopDrive, closeGain);
+	flywheelAuton(&flywheel, skillsRPM, midDrive, midKp, midKi, 32);
+	tbhInit(&flywheel, stopRPM, stopDrive, closeKp, closeKi);
 }
 
 void tileAuton ()
 {
-	flywheelAuton(&flywheel, farRPM, farDrive, farGain, LCD.preloads);
-	tbhInit(&flywheel, stopRPM, stopDrive, closeGain);
+	flywheelAuton(&flywheel, farRPM, farDrive, farKp, farKi, LCD.preloads);
+	tbhInit(&flywheel, stopRPM, stopDrive, closeKp, closeKi);
 	if (LCD.startTile == "Red Inner" || LCD.startTile == "Blue Outer")
 		turnAuton(200);
 	else
@@ -43,7 +43,7 @@ void tileAuton ()
 		turnAuton(-450);
 	else
 		turnAuton(450);
-	tbhInit(&flywheel, 200, farDrive, farGain);
+	tbhInit(&flywheel, 200, farDrive, farKp, farKi);
 	//***
 	while(flywheel.currentVelocity > flywheel.targetVelocity - toleranceRPM)
 		runIntake(127, 127);
@@ -61,7 +61,7 @@ void outerFieldAuton ()
 		turnAuton(400);
 	else
 		turnAuton(-400);
-	flywheelAuton(&flywheel, midRPM, midDrive, midGain, 3);
+	flywheelAuton(&flywheel, midRPM, midDrive, midKp, midKi, 3);
 }
 
 void innerFieldAuton ()

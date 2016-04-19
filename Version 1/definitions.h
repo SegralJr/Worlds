@@ -1,3 +1,6 @@
+int debug_rpm;
+int debug_drive;
+
 int ballsFired;
 string team = "7701Z";
 
@@ -28,24 +31,31 @@ string team = "7701Z";
 
 //Shooter Constants
 int stopRPM = 0;
-int closeRPM = 130;
-int midRPM = 170;
+int closeRPM = 140;
+int midRPM = 160;
 int farRPM = 210;
 int skillsRPM = 150;
 int toleranceRPM = 20;
 int scaleRPM = 5;
 
-float closeGain = 0.0004;
-float midGain = 0.00035;
-float farGain = 0.00045;
+float closeKp = 0.0012;
+float midKp = 0.0005;
+float farKp = 0.0005;
+
+float closeKi = 0.0000002;
+float midKi = 0.0002;
+float farKi = 0.00045;
+
+int iLowerLimit = 0;
+int iUpperLimit = 35;
 
 float stopDrive = 0;
 float closeDrive = 0.4;
 float midDrive = 0.6;
 float farDrive = 0.8;
 
-int flyMaxPower = 127;
-int flyLoopTime = 10;
+int flyMaxPower = 100;
+int flyLoopTime = 25;
 
 //Drive Constants
 float driveKp = 0.8;
@@ -58,7 +68,3 @@ float turnKd = 0;
 
 //Intake Variables
 bool intakeRunning;
-int lightTolerance = 150;
-
-//Debug Variables
-float debugText;

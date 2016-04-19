@@ -10,6 +10,8 @@ task flywheelTBHControl
 {
 	tbhController *controller = &flywheel;
 
+	int ballsInitial = ballsFired;
+
 	while (true)
 	{
 		tbhUpdate(controller, flywheelEncoder);
@@ -21,12 +23,14 @@ task flywheelTBHControl
 		if (controller->targetVelocity == 0)
 		{
 			while (controller->motorPower > 0)
-				controller->motorPower -= 2;
+				controller->motorPower -= 1;
 		}
 
 		runFlywheel(controller->motorPower);
 
-		writeDebugStreamLine("%d|%d|%d|%d", nPgmTime, controller->currentVelocity, controller->driveAtZero, controller->targetVelocity);
+		debug_rpm = controller->currentVelocity;
+
+		writeDebugStreamLine("%d %d %d", nPgmTime, controller->error, controller->integral);
 
 		wait1Msec(flyLoopTime);
 	}
@@ -37,22 +41,22 @@ void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, 
 	if (stopToggle == 1)
 	{
 		prepBalls();
-		tbhInit (controller, stopRPM, stopDrive, closeGain);
+		tbhInit (controller, stopRPM, stopDrive, closeKp, closeKi);
 	}
 	else if (closeToggle == 1)
 	{
 		prepBalls();
-		tbhInit (controller, closeRPM, closeDrive, closeGain);
+		tbhInit (controller, closeRPM, closeDrive, closeKp, closeKi);
 	}
 	else if (midToggle == 1)
 	{
 		prepBalls();
-		tbhInit (controller, midRPM, midDrive, midGain);
+		tbhInit (controller, midRPM, midDrive, midKp, midKi);
 	}
 	else if (farToggle == 1)
 	{
 		prepBalls();
-		tbhInit (controller, farRPM, farDrive, farGain);
+		tbhInit (controller, farRPM, farDrive, farKp, farKi);
 	}
 }
 
@@ -80,7 +84,6 @@ task trackBallsFired ()
 {
 	int ballWasFired = checkBallFiring();
 	int ballIsFiring;
-	int lastLightValue;
 
 	while(true)
 	{
@@ -97,13 +100,13 @@ task trackBallsFired ()
 	}
 }
 
-void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int gain, int balls)
+void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, int Kp, int Ki, int balls)
 {
 	int ballsFiredInitial = ballsFired;
 
 	prepBalls();
 
-	tbhInit (controller, goalRPM, predictedDrive, gain);
+	tbhInit (controller, goalRPM, predictedDrive, Kp, Ki);
 
 	while (controller->currentVelocity < controller->targetVelocity) {wait1Msec(1);}
 
@@ -112,5 +115,5 @@ void flywheelAuton (tbhController *controller, int goalRPM, int predictedDrive, 
 		runIntake(127, 127);
 	}
 
-	tbhInit (controller, stopRPM, stopDrive, closeGain);
+	tbhInit (controller, stopRPM, stopDrive, closeKp, closeKi);
 }
