@@ -3,9 +3,6 @@
 #define rightButton					4
 
 typedef struct {
-	char* topLine;
-	char* botLine;
-
 	int count;
 	int maxCount;
 
@@ -53,10 +50,16 @@ void initializeLCD (int maxCount)
 	LCD.maxCount = maxCount;
 }
 
+void displayScreenLCDCentered (char* topText, char* botText)
+{
+	displayLCDCenteredString(0, topText);
+	displayLCDCenteredString(1, botText);
+}
+
 void displayScreenLCD (char* topText, char* botText)
 {
-	LCD.topLine = topText;
-	LCD.botLine = botText;
+	displayLCDString(0, 0, topText);
+	displayLCDString(1, 0, botText);
 }
 
 void selectOption (char* title, int optionCount)
@@ -106,7 +109,7 @@ void selectAuton ()
 		selectOption("Skills", 4);
 	}
 
-	LCD.type = LCD.topLine;
+	sprintf(LCD.type, "%d %d", LCD.color, LCD.tile);
 
 	clearScreenLCD();
 }
@@ -119,7 +122,7 @@ void selectStart ()
 	{
 		while (nLCDButtons != leftButton && nLCDButtons != rightButton)
 		{	//Select alliance color
-			displayScreenLCD("Blue        Red", "<             >");
+			displayScreenLCDCentered("Blue        Red", "<             >");
 
 			if (nLCDButtons == leftButton)
 			{
@@ -183,6 +186,8 @@ void displayAutonomous ()
 
 	sprintf(topText, LCD.type);
 	sprintf(botText, LCD.color, " ", LCD.tile);
+
+	displayScreenLCDCentered(topText, botText);
 }
 
 void displayBattery ()
@@ -198,18 +203,9 @@ void displayBattery ()
 	sprintf(primaryBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0, 'V');
 	sprintf(topText, "Primary: ", primaryBattery);
 	strcat(topText, primaryBattery);
-	LCD.topLine = topText;
 	//Display backup battery level
 	sprintf(secondaryBattery, "%1.2f%c", powerExpanderVolts, 'V');
-	sprintf(botText, "Secondary: ", secondaryBattery);
-	LCD.botLine = botText;
-}
+	sprintf(botText, "Expander: ", secondaryBattery);
 
-task updateScreenLCD ()
-{
-	while(true)
-	{
-		displayLCDCenteredString(0, LCD.topLine);
-		displayLCDCenteredString(1, LCD.botLine);
-	}
+	displayScreenLCD(primaryBattery, secondaryBattery);
 }

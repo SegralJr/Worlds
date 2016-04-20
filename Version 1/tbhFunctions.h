@@ -96,10 +96,12 @@ void tbhCalculate (tbhController *controller)
 		else
 		{
 			//controller->drive = (0.5 * controller->drive + 0.5 * controller->driveAtZero);
-			if (intakeRunning && controller->targetVelocity == closeRPM  )
-			controller->drive = (0.1 * controller->drive + 0.9 * controller->driveAtZero);
+			if (intakeRunning && (controller->targetVelocity == closeRPM || controller->targetVelocity == midRPM ))
+				controller->drive = (0.1 * controller->drive + 0.9 * controller->driveAtZero);
+			else if (intakeRunning && controller->targetVelocity == farRPM)
+				controller->drive = (0.5 * controller->drive + 0.5 * controller->driveAtZero);
 			else
-			controller->drive = (0.5 * controller->drive + 0.5 * controller->driveAtZero);
+				controller->drive = 0.5 * (controller->drive + controller->driveAtZero);
 		}
 		controller->driveAtZero = controller->drive;
 	}

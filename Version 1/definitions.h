@@ -29,6 +29,7 @@ string team = "7701Z";
 #define skillsShooterButton			vexRT[Btn8U]
 #define incrementShooterButton	vexRT[Btn8R]
 #define decrementShooterButton	vexRT[Btn8D]
+#define emergencyShooterButton vexRT[Btn8L]
 
 //Shooter Constants
 int stopRPM = 0;

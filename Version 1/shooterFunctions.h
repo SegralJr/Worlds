@@ -10,8 +10,6 @@ task flywheelTBHControl
 {
 	tbhController *controller = &flywheel;
 
-	int ballsInitial = ballsFired;
-
 	while (true)
 	{
 		tbhUpdate(controller, flywheelEncoder);
@@ -83,6 +81,11 @@ void flywheelRC (tbhController *controller)
 {
 	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton, skillsShooterButton);
 	tuneFlywheelRPM(controller, incrementShooterButton, decrementShooterButton);
+
+	if (vexRT[Btn8L] && controller->currentVelocity < toleranceRPM)
+	{
+		runFlywheel(-60);
+	}
 }
 
 task trackBallsFired ()

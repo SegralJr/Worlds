@@ -42,7 +42,6 @@
 void pre_auton()
 {
 	bStopTasksBetweenModes = false;
-	startTask(updateScreenLCD);
 	/*
 	selectAuton();
 	selectStart();
@@ -73,11 +72,6 @@ task usercontrol()
 		driveRC(lDriveControl*0.875, rDriveControl);
 		intakeRC(inRollerButton, outRollerButton, upIntakeButton, downIntakeButton);
 		flywheelRC(&flywheel);
-
-		if (vexRT[Btn8L])
-		{
-			runFlywheel(-60);
-		}
 
 		displayBattery();
 	}
