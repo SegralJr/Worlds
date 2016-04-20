@@ -30,13 +30,13 @@ task flywheelTBHControl
 
 		debug_rpm = controller->currentVelocity;
 
-		writeDebugStreamLine("%d %d %d", nPgmTime, controller->error, controller->integral);
+		writeDebugStreamLine("%d", controller->currentVelocity);
 
 		wait1Msec(flyLoopTime);
 	}
 }
 
-void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, int farToggle, int stopToggle)
+void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, int farToggle, int stopToggle, int skillsToggle)
 {
 	if (stopToggle == 1)
 	{
@@ -58,6 +58,11 @@ void setFlywheelRPM (tbhController *controller, int closeToggle, int midToggle, 
 		prepBalls();
 		tbhInit (controller, farRPM, farDrive, farKp, farKi);
 	}
+	else if (skillsToggle == 1)
+	{
+		prepBalls();
+		tbhInit (controller, skillsRPM, midDrive, midKp, midKi);
+	}
 }
 
 void tuneFlywheelRPM (tbhController *controller, int increment, int decrement)
@@ -76,7 +81,7 @@ void tuneFlywheelRPM (tbhController *controller, int increment, int decrement)
 
 void flywheelRC (tbhController *controller)
 {
-	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton);
+	setFlywheelRPM(controller, closeShooterButton, midShooterButton, farShooterButton, stopShooterButton, skillsShooterButton);
 	tuneFlywheelRPM(controller, incrementShooterButton, decrementShooterButton);
 }
 

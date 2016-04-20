@@ -26,6 +26,7 @@ string team = "7701Z";
 #define closeShooterButton 			vexRT[Btn7L]
 #define midShooterButton 				vexRT[Btn7U]
 #define farShooterButton				vexRT[Btn7R]
+#define skillsShooterButton			vexRT[Btn8U]
 #define incrementShooterButton	vexRT[Btn8R]
 #define decrementShooterButton	vexRT[Btn8D]
 
@@ -33,18 +34,18 @@ string team = "7701Z";
 int stopRPM = 0;
 int closeRPM = 140;
 int midRPM = 160;
-int farRPM = 210;
-int skillsRPM = 150;
+int farRPM = 205;
+int skillsRPM = 155;
 int toleranceRPM = 20;
 int scaleRPM = 5;
 
 float closeKp = 0.0012;
-float midKp = 0.0005;
-float farKp = 0.0005;
+float midKp = 0.001;
+float farKp = 0.002;
 
 float closeKi = 0.0000002;
-float midKi = 0.0002;
-float farKi = 0.00045;
+float midKi = 0.0000002;
+float farKi = 0.000000;
 
 int iLowerLimit = 0;
 int iUpperLimit = 35;

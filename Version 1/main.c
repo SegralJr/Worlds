@@ -74,6 +74,11 @@ task usercontrol()
 		intakeRC(inRollerButton, outRollerButton, upIntakeButton, downIntakeButton);
 		flywheelRC(&flywheel);
 
+		if (vexRT[Btn8L])
+		{
+			runFlywheel(-60);
+		}
+
 		displayBattery();
 	}
 }
